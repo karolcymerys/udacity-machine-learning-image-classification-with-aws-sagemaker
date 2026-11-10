@@ -1,41 +1,53 @@
-# Image Classification using AWS SageMaker
+# Udacity Machine Learning - AWS SageMaker - Fine-tuning ResNet50 to classify dog breeds
 
-Use AWS Sagemaker to train a pretrained model that can perform image classification by using the Sagemaker profiling, debugger, hyperparameter tuning and other good ML engineering practices. This can be done on either the provided dog breed classication data set or one of your choice.
+This is solution of project #3 in Udacity Machine Learning program.
 
-## Project Set Up and Installation
-Enter AWS through the gateway in the course and open SageMaker Studio. 
-Download the starter files.
-Download/Make the dataset available. 
+The goal of this project is to build Image Classification model.
+It aims to assign breed of the dog on provided image.
+The model is fine-tuned on *Dog Breed Dataset*.
 
-## Dataset
-The provided dataset is the dogbreed classification dataset which can be found in the classroom.
-The project is designed to be dataset independent so if there is a dataset that is more interesting or relevant to your work, you are welcome to use it to complete the project.
+## Try it yourself
 
-### Access
-Upload the data to an S3 bucket through the AWS Gateway so that SageMaker has access to the data. 
+### Requirements
 
-## Hyperparameter Tuning
-What kind of model did you choose for this experiment and why? Give an overview of the types of parameters and their ranges used for the hyperparameter search
+- Git
+- AWS Cloud
 
-Remember that your README should:
-- Include a screenshot of completed training jobs
-- Logs metrics during the training process
-- Tune at least two hyperparameters
-- Retrieve the best best hyperparameters from all your training jobs
-
-## Debugging and Profiling
-**TODO**: Give an overview of how you performed model debugging and profiling in Sagemaker
-
-### Results
-**TODO**: What are the results/insights did you get by profiling/debugging your model?
-
-**TODO** Remember to provide the profiler html/pdf file in your submission.
+1. Execute Jupyter notebook [train_and_deploy.ipynb](./train_and_deploy.ipynb) in SageMaker Studio.
 
 
-## Model Deployment
-**TODO**: Give an overview of the deployed model and instructions on how to query the endpoint with a sample input.
+## Project structure
 
-**TODO** Remember to provide a screenshot of the deployed active endpoint in Sagemaker.
+```text
+udacity-machine-learning-image-classification-with-aws-sagemaker/
+├── hpo.py                 # Hyperparameter optimization script
+├── train_model.py         # Model training script
+├── train_and_deploy.html  # Project workspace as HTML file
+├── train_and_deploy.ipynb # Project workspace as Jupyter notebook
+└── README.md              # README file
+```
 
-## Standout Suggestions
-**TODO (Optional):** This is where you can provide information about any standout suggestions that you have attempted.
+## Hyperparameter Optimization
+
+In order to solve main problem ResNet50 architecture was selected.
+Hyperparameter optimization was performed to find the best parameters.
+Below table shows loss values for all tested hyperparameter combinations:
+
+| Batch Size | Epochs | Learning Rate             | Optimizer | Loss value             |
+| ---------- | ------ | ------------------------- | --------- | ---------------------- |
+|     **64** |  **4** | **0.0038940075053948960** |  **Adam** | **0.4791969954967499** |
+|         64 |      4 |     0.0046897104564080050 |      Adam |     0.6021945476531982 |
+|         64 |      1 |     0.0037338008076578787 |   RMSprop |     0.7474458813667297 |
+|        256 |      3 |     0.0015819044035065258 |   RMSprop |     1.6783027648925781 |
+|         64 |      3 |     0.0097900668677548120 |       SGD |     2.8632850646972656 |
+
+### SageMaker Training Jobs Dashboard
+
+![SageMaker TrainingJobs](./assets/training_job_dashboard.png)
+
+## Debugging
+
+While training model, few scalar metrics were captured. 
+Below charts contain loss and accuracy values for validation datasets after steps:
+
+![Tensorboard metrics](./assets/tensorboard_plots.png)
