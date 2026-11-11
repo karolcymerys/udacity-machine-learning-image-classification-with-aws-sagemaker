@@ -218,7 +218,7 @@ def main(args):
         logger.info(f'Test Avg Loss: {test_avg_loss:.8f}\tTest Accuracy: {test_accuracy:.4f}')
 
         # Save the trained model
-        torch.save(model, os.path.join(args.model_dir, "model.pth"))
+        torch.save(model.state_dict(), os.path.join(args.model_dir, "model.pth"))
 
         tensorboard_writer.flush()
         tensorboard_writer.close()
