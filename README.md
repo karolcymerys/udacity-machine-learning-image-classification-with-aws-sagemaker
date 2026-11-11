@@ -51,3 +51,26 @@ While training model, few scalar metrics were captured.
 Below charts contain loss and accuracy values for validation datasets after steps:
 
 ![Tensorboard metrics](./assets/tensorboard_plots.png)
+
+## Inference
+
+Executing `train_and_deploy.ipynb` will allow to create SageMaker endpoint and perform inference on provided images.
+
+![Endpoint](./assets/endpoint_running.png)
+
+In order to get response from that endpoint we need to use following code:
+
+```python
+import json
+
+with open("your_image.jpg", "rb") as f:
+    image_bytes = f.read()
+
+response = endpoint.invoke(
+    body=image_bytes,
+    content_type="application/x-image",
+)
+
+result = json.loads(response.body.read().decode("utf-8"))
+result
+```
